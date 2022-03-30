@@ -1,0 +1,10 @@
+Number -> [0-9]+
+Identifier -> [a-z][A-Z]_([a-z][A-Z]_)*
+Keyword -> ... (like Identifier)
+String -> "([-"]|\.)*"
+Comma -> ,
+Colon -> :
+Left_bracket -> [
+Right_bracket -> ]
+Dot -> .
+Sharp -> #
