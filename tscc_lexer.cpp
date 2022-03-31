@@ -158,6 +158,10 @@ std::string to_string(TokenType type) {
         return "label";
     case TokenType::DEFINE:
         return "define";
+    case TokenType::NOP:
+        return "nop";
+    case TokenType::SELECT:
+        return "select";
     default:
         return "error";
     }
@@ -298,5 +302,7 @@ void init_lexer(void) {
     keywords.insert("pointer",TokenType::TYPE_POINTER);
     keywords.insert("variables",TokenType::VARIABLES);
     keywords.insert("label",TokenType::LABEL);
-    keywords.insert("define",TokenType::DEFINE)
+    keywords.insert("define",TokenType::DEFINE);
+    keywords.insert("nop",TokenType::NOP);
+    keywords.insert("select",TokenType::SELECT);
 }

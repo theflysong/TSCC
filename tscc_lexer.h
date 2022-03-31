@@ -60,6 +60,8 @@ enum class TokenType {
     NEWLINE,
     LABEL,
     DEFINE,
+    NOP,
+    SELECT,
     ERROR = -1
 };
 
