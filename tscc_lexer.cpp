@@ -3,22 +3,24 @@
 #include <iostream>
 
 //other: 0, [0-9]: 1, [a-z][A-Z]'_': 2, ',': 3, '[': 4, ']': 5,  ':':6
-//'"':7 '\':8 eof:9 '.': 10 '#': 11
+//'"':7 '\':8 eof:9 '.': 10 '#': 11 \n:12
 int char_mapping[128] = {};
 
-int trans[][12] = {
-    {-2,  1,  2,  3,  4,  5,  6,  7, -1, -2, 10, 11},
-    {-2,  1, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2,  2,  2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    { 7,  7,  7,  7,  7,  7,  7,  9,  8, -1, -2, -2},
-    { 7,  7,  7,  7,  7,  7,  7,  7,  7, -1, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
-    {-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2}
+int trans[][13] = {
+//       0   1   2   3   4   5   6   7   8   9  10  11  12
+/* 0 */{-2,  1,  2,  3,  4,  5,  6,  7, -1, -2, 10, 11, 12},
+/* 1 */{-2,  1, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/* 2 */{-2,  2,  2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/* 3 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/* 4 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/* 5 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/* 6 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/* 7 */{ 7,  7,  7,  7,  7,  7,  7,  9,  8, -1, -2, -2, -2},
+/* 8 */{ 7,  7,  7,  7,  7,  7,  7,  7,  7, -1, -2, -2, -2},
+/* 9 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/*10 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2},
+/*11 */{11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, -2},
+/*12 */{-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2}
 };
 
 std::pair<int, int> run_once(std::string str, const int start) {
@@ -39,7 +41,7 @@ std::pair<int, int> run_once(std::string str, const int start) {
 
 TokenType state2type[] = {TokenType::EMPTY, TokenType::NUMBER, TokenType::IDENTIFIER, TokenType::COMMA,
 TokenType::LEFT_BRACKET, TokenType::RIGHT_BRACKET, TokenType::COLON, TokenType::ERROR, TokenType::ERROR,
-TokenType::STRING, TokenType::DOT, TokenType::SHARP};
+TokenType::STRING, TokenType::DOT, TokenType::COMMENT, TokenType::NEWLINE};
 
 std::string to_string(TokenType type) {
     switch (type)
@@ -148,8 +150,14 @@ std::string to_string(TokenType type) {
         return "variables";
     case TokenType::DOT:
         return "dot";
-    case TokenType::SHARP:
-        return "sharp";
+    case TokenType::NEWLINE:
+        return "newline";
+    case TokenType::COMMENT:
+        return "comment";
+    case TokenType::LABEL:
+        return "label";
+    case TokenType::DEFINE:
+        return "define";
     default:
         return "error";
     }
@@ -244,6 +252,7 @@ void init_lexer(void) {
     char_mapping['\\'] = 8;
     char_mapping['.'] = 10;
     char_mapping['#'] = 11;
+    char_mapping['\n'] = 12;
 
     keywords.insert("assign",TokenType::ASSIGN);
     keywords.insert("add",TokenType::ADD);
@@ -288,4 +297,6 @@ void init_lexer(void) {
     keywords.insert("double",TokenType::TYPE_DOUBLE);
     keywords.insert("pointer",TokenType::TYPE_POINTER);
     keywords.insert("variables",TokenType::VARIABLES);
+    keywords.insert("label",TokenType::LABEL);
+    keywords.insert("define",TokenType::DEFINE)
 }

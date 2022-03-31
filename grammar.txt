@@ -7,4 +7,4 @@ Colon -> :
 Left_bracket -> [
 Right_bracket -> ]
 Dot -> .
-Sharp -> #
+Comment -> #(.|' '|'\t')*

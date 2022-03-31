@@ -6,12 +6,15 @@ int main(int argc, const char **argv) {
     std::string input = "";
     std::string str = "";
     do {
-        input += str;
+        input += (str + "\n");
         std::getline(std::cin, str);
     }while (str != "__endinput__");
     auto tokens = lex(input);
     for (auto tok : tokens) {
-        std::cout << "(" << to_string(tok.type) << ":" << tok.content << ");";
+        if (tok.type == TokenType::NEWLINE)
+            std::cout << "(" << to_string(tok.type) << ":" << "\\n" << ");" << std::endl;
+        else
+            std::cout << "(" << to_string(tok.type) << ":" << tok.content << ");";
     }
     std::cout << std::endl;
     return 0;

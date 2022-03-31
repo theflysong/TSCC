@@ -56,7 +56,10 @@ enum class TokenType {
     TYPE_POINTER,
     VARIABLES,
     DOT,
-    SHARP,
+    COMMENT,
+    NEWLINE,
+    LABEL,
+    DEFINE,
     ERROR = -1
 };
 
